@@ -10,25 +10,14 @@ description: Initialize a Vue 3 + Vite webapp inside a Dataiku Code Studio in a 
 - `project_name`: folder name under `project-lib-versioned/webapps/` (example: `marketpaceapp`).
 - `client_port` (default: `4200`): Vite dev server port.
 - `api_port` (default: `5000`): Flask backend port.
-- `webapp_folder` (default: `project_name`): DSS webapp folder name (used for serving `dist/`).
+- `webapp_folder` (default: `project_name`): DSS webapp wrapper folder name (used for serving `dist/`).
 
 ## Workflow
 
 
-### 0) Install Code Studio Volar extension
+### 1) Install Code Studio Volar extension
 
 code-server --install-extension Vue.volar
-
-### 1) Ensure npm cache is usable
-
-Update the npm cache (needed for the current setup in code studios)
-
-```bash
-mkdir -p /home/dataiku/workspace/code_studio-resources/npm-cache
-npm config set cache /home/dataiku/workspace/code_studio-resources/npm-cache
-```
-
-Note : If you run into any issues changing the cache folder, tell the user how they can do it.
 
 ### 2) Scaffold the Vue app
 
@@ -37,7 +26,7 @@ Create the project under the synced folder:
 ```bash
 mkdir -p project-lib-versioned/webapps
 cd project-lib-versioned/webapps
-npm create vue@latest <project_name>
+npm config set strict-ssl false
 npm create vue@latest <project_name> -y -- --typescript --eslint --vitest --playwright --router
 cd <project_name>
 npm install
