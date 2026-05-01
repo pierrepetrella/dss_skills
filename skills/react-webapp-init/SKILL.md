@@ -79,7 +79,14 @@ Create `backend/wsgi.py` using `references/backend-wsgi-py.md`.
 - In the Dataiku project, confirm there is a **Standard Webapp** (a folder under workspace root `webapps/<WEBAPP_ID>/` containing `backend.py`, `app.js`, `body.html`, `style.css`).
 - `WEBAPP_ID` is usually `<project_name>_<Random_ID>`.
 
-If missing, ask the user to create it in DSS and sync files with Code Studio.
+If it does not exist yet, try creating it using the provided skill script:
+
+```bash
+source /opt/dataiku/pyenv/bin/activate
+/opt/dataiku/pyenv/bin/python scripts/create_dku_webapp.py <project_name>
+```
+
+If the script fails, instruct the user to create the Standard Webapp manually in DSS and sync files with Code Studio.
 
 1) Ensure DSS can import `webapps` python modules
 
