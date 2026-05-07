@@ -18,31 +18,27 @@ def main():
     client = dataiku.api_client()
     project = client.get_default_project()
 
-    try:
-        # Create webapp
-        webapp = project.create_webapp(args.webapp_name, "STANDARD")
 
-        # Get state
-        state = webapp.get_state()
+    # Create webapp
+    webapp = project.create_webapp(args.webapp_name, "STANDARD")
 
-        print(json.dumps({
-            "ok": True,
-            "created": True,
-            "webapp_name": args.webapp_name,
-            "webapp_id": webapp.id,
-            "running": state.running,
-           "state": state.state
-        }, indent=2))
+    # Get state
+    state = webapp.get_state()
+    
+    # Set Flask backend
+    settings = webapp.get_settings()
+    settings.data["params"]["backendEnabled"] = True
+    #settings.data["params"]["envSelection"] = {'envMode': 'EXPLICIT_ENV','envName': 'General_webapp_backend'}
+    settings.data["params"]["envSelection"] = {'envMode': 'INHERIT'}
+    settings.save()
 
-    except Exception as e:
-        print("Dataiku cannot create a webapp programatically, please create webapp manually")
-        #print(json.dumps({
-        #    "ok": False,
-        #    "created": False,
-        #    "webapp_name": args.webapp_name,
-        #    "error": str(e)
-        #}))
-        sys.exit(1)
+
+    return json.dumps({
+        "ok": True,
+        "created": True,
+        "webapp_name": args.webapp_name,
+       "state": state.state
+    }, indent=2)
 
 
 if __name__ == "__main__":
